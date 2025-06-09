@@ -9,13 +9,33 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # Bagian ini adalah aturan bawaan framework Anda, biarkan saja
     RewriteCond %{REQUEST_FILENAME} -d [OR]
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ ^$1 [N]
 
+    # Bagian ini juga aturan bawaan, biarkan saja
     RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
     RewriteRule ^(.*)$ public/$1
 
+
+    # ==================================================================
+    # ==> TAMBAHKAN BLOK ATURAN API BARU DI SINI <==
+    #
+    # Aturan ini secara khusus menangani semua permintaan yang diawali 
+    # dengan /api/ dan mengarahkannya ke folder /api yang kita buat.
+    # Flag [L] berarti "Last", jika aturan ini cocok, Apache akan berhenti 
+    # memproses aturan di bawahnya.
+    # ==================================================================
+    RewriteRule ^api/(.*)$ api/index.php?request=$1 [L,QSA]
+
+
+    # ==================================================================
+    # INI ADALAH ATURAN ASLI ANDA (JANGAN DIHAPUS)
+    # Aturan ini adalah "penangkap semua" (catch-all) untuk framework Anda.
+    # Jika permintaan BUKAN untuk /api/ dan BUKAN file/folder yang ada,
+    # maka akan diarahkan ke server.php.
+    # ==================================================================
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ server.php
