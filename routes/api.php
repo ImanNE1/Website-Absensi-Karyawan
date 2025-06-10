@@ -17,9 +17,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-// === GANTI RUTE LAMA ANDA DENGAN YANG INI ===
-
 /**
  * Rute untuk mendapatkan SEMUA data karyawan, 
  * lengkap dengan nama divisi dan jabatannya.
@@ -48,10 +45,6 @@ Route::get('/karyawan', function () {
     }
 });
 
-/**
- * Rute untuk mendapatkan SATU data karyawan berdasarkan ID,
- * lengkap dengan nama divisi dan jabatannya.
- */
 Route::get('/karyawan/{id}', function ($id) {
     try {
         $karyawan = DB::table('users')
@@ -150,7 +143,7 @@ Route::post('/absensi', function (Request $request) {
         return response()->json(['message' => 'Anda berada di luar radius lokasi yang diizinkan.'], 422);
     }
     
-    // 3. LOGIKA BARU: MEMBEDAKAN PROSES MASUK DAN PULANG
+
     // =======================================================
     $today = now()->toDateString();
     
